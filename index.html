@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Interface</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar for Chat List -->
+    <div class="sidebar">
+      <div class="search-bar">
+        <input type="text" placeholder="Search" />
+      </div>
+      <div class="chats">
+        <!-- Chat item template -->
+        <div class="chat-item">
+            <div class="avatar"></div>
+            <div class="chat-info">
+              <div class="chat-title">Digital science 2021-2022</div>
+              <div class="chat-message">आजचे Live सत्रांकाली 4.00 pm...</div>
+            </div>
+            <div class="chat-time">101</div>
+          </div>
+        <!-- Repeat chat items as needed -->
+        <!-- Example chat item below -->
+        <div class="chat-item">
+          <div class="avatar"></div>
+          <div class="chat-info">
+            <div class="chat-title">Digital science 2021-2022</div>
+            <div class="chat-message">आजचे Live सत्रांकाली 4.00 pm...</div>
+          </div>
+          <div class="chat-time">101</div>
+        </div>
+        <div class="chat-item">
+            <div class="avatar"></div>
+            <div class="chat-info">
+              <div class="chat-title">Digital science 2021-2022</div>
+              <div class="chat-message">आजचे Live सत्रांकाली 4.00 pm...</div>
+            </div>
+            <div class="chat-time">101</div>
+          </div>
+      </div>
+
+
+      
+    </div>
+    <!-- Main Area -->
+    <div class="main-area">
+      <div class="main-content">Select a chat to start messaging</div>
+    </div>
+    <!-- Floating Button -->
+    <div class="floating-btn" id="floatingBtn" onclick="toggleDialog()">
+      <img
+        src="https://i.pinimg.com/474x/55/e0/76/55e07698bca8e4aa1761121600c818e0.jpg"
+        alt="AI Icon"
+        class="icon"
+      />
+    </div>
+    <!-- Main Dialog -->
+    <div id="mainDialog" class="dialogue">
+      <div class="dialogue-content">
+        <span class="close" onclick="toggleDialog()">&times;</span>
+        <h1>Event Planning and RSVP Manager</h1>
+
+        <!-- Service Buttons -->
+        <div class="service-buttons">
+          <button class="service-btn" data-dialogue="eventDialog">
+            Create Event
+          </button>
+          <button class="service-btn" data-dialogue="sendEventDetails">
+            Send Event Details
+          </button>
+        </div>
+
+        <!-- Event Creation Dialog -->
+        <div id="eventDialog" class="dialogue">
+          <div class="dialogue-content">
+            <span class="close" onclick="closeDialogue('eventDialog')">&times;</span>
+            <h2>Create Event</h2>
+            <form id="eventForm">
+              <label for="eventName">Event Name:</label>
+              <input type="text" id="eventName" name="eventName" />
+
+              <label for="eventDate">Date:</label>
+              <input type="date" id="eventDate" name="eventDate" />
+
+              <label for="eventTime">Time:</label>
+              <input type="time" id="eventTime" name="eventTime" />
+
+              <label for="eventNote">Note:</label>
+              <textarea id="eventNote" name="eventNote"></textarea>
+
+              <button type="button" id="addToCalendarBtn" onclick="addToGoogleCalendar()">
+                Add to Google Calendar
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Send Event Details Dialog -->
+        <div id="sendEventDetails" class="dialogue">
+          <div class="dialogue-content">
+            <span class="close" onclick="closeDialogue('sendEventDetails')">&times;</span>
+            <h2>Send Event Details</h2>
+            <form>
+              <label for="telegramContacts">Telegram Contacts:</label>
+              <input type="text" id="telegramContacts" name="telegramContacts" />
+              <button type="button" id="sendDetailsBtn">Send Details</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div id="notesSection" class="notes-section">
+          <h2>Notes</h2>
+          <form id="noteForm">
+            <label for="noteTitle">Title:</label>
+            <input type="text" id="noteTitle" name="noteTitle" />
+
+            <label for="noteContent">Content:</label>
+            <textarea id="noteContent" name="noteContent"></textarea>
+
+            <button type="button" id="saveNoteBtn" onclick="saveNote()">
+              Save Note
+            </button>
+          </form>
+          <div id="previousNotesSection">
+            <h2>Previous Notes</h2>
+            <div id="notesList" onclick="showNoteDialog(event)">
+              <!-- Notes will be dynamically added here -->
+            </div>
+          </div>
+          <!-- Note Dialog -->
+          <div id="noteDialog" class="dialogue">
+            <div class="dialogue-content">
+              <span class="close" onclick="closeNoteDialog()">&times;</span>
+              <h2 class="note-title"></h2>
+              <p class="note-content"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Replace with your OAuth client ID
+    const CLIENT_ID = '710311551344-d6emdug06tmcs95k318td5i0e2g3u4lf.apps.googleusercontent.com';
+    
+    // Array of API discovery doc URLs for APIs used by the application
+    const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+    
+    // Authorization scopes required by the API; see https://developers.google.com/calendar/auth
+    const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+    
+    // Initialize Google API client and set up event listeners
+    function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+    }
+    
+    function initClient() {
+        gapi.client.init({
+            apiKey: 'YOUR_API_KEY', // Not needed if using OAuth
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+        }).then(function () {
+            // Listen for sign-in state changes
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+    
+            // Handle initial sign-in state
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+        }).catch(function (error) {
+            console.error('Error initializing Google API client: ' + error.message);
+        });
+    }
+    
+    function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+            // User is signed in, can now handle calendar events
+        } else {
+            // User is not signed in, show sign-in button or initiate sign-in flow
+        }
+    }
+    
+    // Function to create an event and add it to Google Calendar
+    function addToGoogleCalendar() {
+        const eventName = document.getElementById('eventName').value;
+        const eventDate = document.getElementById('eventDate').value;
+        const eventTime = document.getElementById('eventTime').value;
+        const eventNote = document.getElementById('eventNote').value;
+        
+        console.log('Attempting to add event to Google Calendar...');
+        
+        gapi.client.calendar.events.insert({
+            'calendarId': 'primary',
+            'resource': {
+                'summary': eventName,
+                'description': eventNote,
+                'start': {
+                    'dateTime': eventDate + 'T' + eventTime + ':00',
+                    'timeZone': 'Asia/Kolkata' // Adjusted to India/Mumbai timezone
+                },
+                'end': {
+                    'dateTime': eventDate + 'T' + eventTime + ':00',
+                    'timeZone': 'Asia/Kolkata'
+                },
+                'reminders': {
+                    'useDefault': false,
+                    'overrides': [
+                        {'method': 'popup', 'minutes': 30}
+                    ]
+                }
+            }
+        }).then(function(response) {
+            console.log('Event added to Google Calendar successfully!', response);
+            alert('Event added to Google Calendar successfully!');
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventDate').value = '';
+            document.getElementById('eventTime').value = '';
+            document.getElementById('eventNote').value = '';
+        }).catch(function(error) {
+            console.error('Error adding event to Google Calendar: ' + error.message);
+            alert('Error adding event to Google Calendar. Please try again later.');
+        });
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/api.js" onload="handleClientLoad()"></script>
+  <script src="script.js"></script>
+</body>
+</html>

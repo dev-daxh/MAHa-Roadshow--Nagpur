@@ -1,0 +1,268 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background: #f1f1f1;
+    padding: 10px;
+}
+
+.search-bar {
+    margin-bottom: 10px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.chats {
+    overflow-y: auto;
+    height: 500px;
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.chat-item:hover {
+    background: #ddd;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.chat-info {
+    flex-grow: 1;
+}
+
+.chat-title {
+    font-weight: bold;
+}
+
+.chat-message {
+    color: #666;
+}
+
+.chat-time {
+    white-space: nowrap;
+    color: #999;
+}
+
+.main-area {
+    flex-grow: 1;
+    padding: 20px;
+    background-image: url('pattern-monochrome-telegram.jpg');
+   
+}
+
+.main-content {
+    text-align: center;
+    color: #666;
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #007bff;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.floating-btn .icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.dialogue {
+    display: none;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 300px;
+    max-height: 500px; /* Set a maximum height for the dialogue */
+    overflow: hidden; /* Hide overflowing content */
+}
+
+.dialogue-content {
+    position: relative;
+    overflow-y: auto; /* Use 'auto' to show scrollbar only when needed */
+    max-height: 400px; /* Adjust as needed based on your layout */
+}
+/* Hide the default scrollbar for Firefox */
+.dialogue-content {
+    scrollbar-width: thin; /* "thin" makes scrollbar slimmer */
+    scrollbar-color: #ccc transparent; /* Color of scrollbar and track */
+}
+
+/* Hide the default scrollbar for Webkit browsers (Chrome, Safari, Edge) */
+.dialogue-content::-webkit-scrollbar {
+    width: 6px; /* Set width of the scrollbar */
+}
+
+/* Style the scrollbar thumb */
+.dialogue-content::-webkit-scrollbar-thumb {
+    background-color: #ccc; /* Color of the scrollbar thumb */
+    border-radius: 3px; /* Roundness of the scrollbar thumb */
+}
+
+/* Style the scrollbar track (the area behind the thumb) */
+.dialogue-content::-webkit-scrollbar-track {
+    background-color: transparent; /* Color of the scrollbar track */
+}
+
+
+.dialogue .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #ff0000;
+}
+
+.service-buttons {
+    margin-top: 20px;
+}
+
+.service-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.service-btn:hover {
+    background: #0056b3;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+form button {
+    background: #28a745;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+form button:hover {
+    background: #218838;
+}
+
+/* Notes Section Styles */
+.notes-section {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.notes-section h2 {
+    color: #007bff;
+}
+
+#noteForm label {
+    color: #333;
+}
+
+#noteForm input,
+#noteForm textarea {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fff;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+#noteForm input:focus,
+#noteForm textarea:focus {
+    background: #e6f7ff;
+    border-color: #007bff;
+}
+
+#saveNoteBtn {
+    background: #ff6b6b;
+    border-radius: 5px;
+}
+
+#saveNoteBtn:hover {
+    background: #e65c5c;
+}
+
+#previousNotesSection h2 {
+    margin-top: 30px;
+    color: #007bff;
+}
+
+.note-item {
+    background: #fff;
+    border-left: 5px solid #007bff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s, border-left-color 0.3s;
+}
+
+.note-item:hover {
+    background: #e6f7ff;
+    border-left-color: #0056b3;
+}
+
+.note-item h3 {
+    margin: 0;
+    color: #333;
+}
+
+.note-item p {
+    margin: 5px 0 0;
+    color: #666;
+}
